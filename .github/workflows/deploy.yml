@@ -7,19 +7,11 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan therevi.pl >> ~/.ssh/known_hosts
-
       - name: Deploy code via rsync
-        run: |
-          rsync -avz --delete ./ revi@therevi.pl:/var/www/laravel
+        run: git pull
